@@ -4,6 +4,8 @@ from stable_baselines3.ppo.policies import MlpPolicy
 import time
 from datetime import datetime
 
+from vec_env import make_vec_env_mod
+
 # Training parameters
 num_env = 1
 max_steps = int(1e6)
