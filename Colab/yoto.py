@@ -102,8 +102,6 @@ class YotoEnv(gym.Wrapper):
         self.lambda_r = sample_log_uniform(low=self.lambda_rng[0], high=self.lambda_rng[1], size=1)[0]
         # print('New lambda: ', self.lambda_r)
 
-import numpy as np
-
 def sample_log_uniform(low=0.01, high=2.0, size=1):
 #     return np.exp(np.random.uniform(np.log(low), np.log(high), size))
     # return np.random.uniform(low, high, size)
