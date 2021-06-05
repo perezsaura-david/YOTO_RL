@@ -47,7 +47,7 @@ print(model_file)
 now = datetime.now()
 print('Start training:', now.time())
 time_0 = time.time()
-%tensorboard --logdir TB
+# %tensorboard --logdir TB
 model.learn(total_timesteps=max_steps, log_interval=log_int, callback=TensorboardCallback())
 # model.learn(total_timesteps=max_steps, log_interval=log_int)
 time_training = time.time() - time_0
