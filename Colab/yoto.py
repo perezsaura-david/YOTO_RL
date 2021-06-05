@@ -109,3 +109,41 @@ def sample_log_uniform(low=0.01, high=2.0, size=1):
         return np.random.uniform(low, high, size)
     else:
         return np.exp(np.random.uniform(np.log(low), np.log(high), size))
+
+## Reward functions
+# 1st attempt: Substract lambda from the reward
+def reduce_steps(cp_lambda, reward):
+#     Substract lambda from reward at each step
+    reward = reward - cd_lambda
+    return reward
+
+# 2nd attempt: Velocity < lambda
+def max_velocity(cp_lambda, reward, obs):
+    velocity = np.sqrt(obs[2]*obs[2] + obs[3]*obs[3])
+#     Velocity < lambda
+    if velocity > cp_lambda:
+        reward -= 10
+    return reward
+
+# 3rd attempt: Landing angle
+def landing_angle(cp_lambda, reward, obs):
+    distance = np.sqrt(obs[0]*obs[0] + obs[1]*obs[1])
+    landing_angle = abs(math.atan2(obs[0],obs[1]))
+    angle_diff = abs(landing_angle - cp_lambda)
+    if distance > 0.25:
+        reward = reward - angle_diff
+    return reward
+
+# 4th attempt: Vel Shaping
+def vel_shaping(cp_lambda, reward, obs, prev_obs):
+    if prev_obs is not None:
+        velocity = np.sqrt(obs[2]*obs[2] + obs[3]*obs[3])
+        prev_velocity = np.sqrt(prev_obs[2]**2 + prev_obs[3]**2)
+        reward += 100*lambda_r*(velocity - prev_velocity)
+    return reward
+
+# 5th attempt: Control velocity
+def control_velocity(cp_lambda, reward, obs):
+    velocity = np.sqrt(obs[2]*obs[2] + obs[3]*obs[3])
+    reward -= 10 * abs(velocity - cp_lambda)
+    return reward
